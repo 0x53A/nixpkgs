@@ -9527,6 +9527,8 @@ self: super: with self; {
 
   matrix-nio = callPackage ../development/python-modules/matrix-nio { };
 
+  matter-python-client = callPackage ../development/python-modules/matter-python-client { };
+
   mattermostdriver = callPackage ../development/python-modules/mattermostdriver { };
 
   maubot = callPackage ../development/python-modules/maubot { };
