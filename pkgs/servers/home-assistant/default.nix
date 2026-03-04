@@ -4,7 +4,7 @@
   callPackage,
   fetchFromGitHub,
   fetchPypi,
-  python313,
+  python314,
   replaceVars,
   ffmpeg-headless,
   inetutils,
@@ -244,7 +244,7 @@ let
     })
   ];
 
-  python = python313.override {
+  python = python314.override {
     self = python;
     packageOverrides = lib.composeManyExtensions (defaultOverrides ++ [ packageOverrides ]);
   };
@@ -263,7 +263,7 @@ let
   extraBuildInputs = extraPackages python.pkgs;
 
   # Don't forget to run update-component-packages.py after updating
-  hassVersion = "2026.2.3";
+  hassVersion = "2026.3.0";
 
 in
 python.pkgs.buildPythonApplication rec {
@@ -284,13 +284,13 @@ python.pkgs.buildPythonApplication rec {
     owner = "home-assistant";
     repo = "core";
     tag = version;
-    hash = "sha256-BEE27D1P3cbxjQMRh3VHL6KDXa7bZDfqK316VQg0/SM=";
+    hash = "sha256-dJ+g9uSdWFWocR92chLxQ4MU5xWDwauh0mmPWfPCqck=";
   };
 
   # Secondary source is pypi sdist for translations
   sdist = fetchPypi {
     inherit pname version;
-    hash = "sha256-UkIxZx3IU0IZh8gbjZ9xRkEZS97UW85FT5isNyPyiHQ=";
+    hash = "sha256-Pe+VtsGjDvNma8NgtNomdyOIexWTXmcm9n13KxdiIOA=";
   };
 
   build-system = with python.pkgs; [
@@ -332,6 +332,7 @@ python.pkgs.buildPythonApplication rec {
   dependencies = with python.pkgs; [
     # Only packages required in pyproject.toml
     aiodns
+    aiogithubapi
     aiohasupervisor
     aiohttp
     aiohttp-asyncmdnsresolver
