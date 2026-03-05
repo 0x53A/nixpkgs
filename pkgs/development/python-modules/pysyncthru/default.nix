@@ -5,7 +5,7 @@
   setuptools,
   aiohttp,
   demjson3,
-  unittestCheckHook,
+  pytestCheckHook,
 }:
 
 buildPythonPackage rec {
@@ -21,14 +21,19 @@ buildPythonPackage rec {
     hash = "sha256-Zije1WzfgIU9pT0H7T/Mx+5gEBCsRgMLkfsa/KB0YtI=";
   };
 
-  nativeBuildInputs = [ setuptools ];
+  patches = [
+    # https://github.com/nielstron/pysyncthru/pull/63
+    ./python-3.14-compat.diff
+  ];
 
-  propagatedBuildInputs = [
+  build-system = [ setuptools ];
+
+  dependencies = [
     aiohttp
     demjson3
   ];
 
-  nativeCheckInputs = [ unittestCheckHook ];
+  nativeCheckInputs = [ pytestCheckHook ];
 
   pythonImportsCheck = [ "pysyncthru" ];
 
