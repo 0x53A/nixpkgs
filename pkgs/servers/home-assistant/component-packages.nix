@@ -6740,8 +6740,9 @@
         pymicro-vad
         pyserial
         pyspeex-noise
+        victron-ble-ha-parser
         zeroconf
-      ]; # missing inputs: victron-ble-ha-parser
+      ];
     "victron_remote_monitoring" =
       ps: with ps; [
         victron-vrm
@@ -8203,6 +8204,7 @@
     "version"
     "vesync"
     "vicare"
+    "victron_ble"
     "victron_remote_monitoring"
     "vilfo"
     "vivotek"
