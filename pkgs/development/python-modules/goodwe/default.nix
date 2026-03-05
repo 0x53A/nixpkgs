@@ -18,6 +18,11 @@ buildPythonPackage (finalAttrs: {
     hash = "sha256-WHLvfAlwhcA0JFSWfwUPsJ9dWmadIjyonXEP3Bb6WKE=";
   };
 
+  patches = [
+    # https://github.com/marcelblijleven/goodwe/pull/131
+    ./python-3.14-compat.patch
+  ];
+
   build-system = [ setuptools ];
 
   nativeCheckInputs = [ pytestCheckHook ];

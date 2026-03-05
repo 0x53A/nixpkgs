@@ -1,0 +1,83 @@
+From d7a001f4cad5ed574ce32bae4f24fcc489eed9b2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sandro=20J=C3=A4ckel?= <sandro.jaeckel@gmail.com>
+Date: Thu, 5 Mar 2026 02:41:23 +0100
+Subject: [PATCH] Fix Python 3.14 compatibility
+
+---
+ tests/test_dt.py |  7 ++++++-
+ tests/test_es.py |  7 ++++++-
+ tests/test_et.py | 11 ++++++++---
+ 3 files changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/tests/test_dt.py b/tests/test_dt.py
+index b5f1811..bd42609 100644
+--- a/tests/test_dt.py
++++ b/tests/test_dt.py
+@@ -48,7 +48,12 @@ def assertSensor(self, sensor_name, expected_value, expected_unit, data):
+ 
+     @classmethod
+     def setUpClass(cls):
+-        cls.loop = asyncio.get_event_loop()
++        cls.loop = asyncio.new_event_loop()
++        asyncio.set_event_loop(cls.loop)
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.loop.close()
+ 
+ 
+ class GW6000_DT_Test(DtMock):
+diff --git a/tests/test_es.py b/tests/test_es.py
+index 6479aa7..45f1b1d 100644
+--- a/tests/test_es.py
++++ b/tests/test_es.py
+@@ -44,7 +44,12 @@ def assertSensor(self, sensor, expected_value, expected_unit, data):
+ 
+     @classmethod
+     def setUpClass(cls):
+-        cls.loop = asyncio.get_event_loop()
++        cls.loop = asyncio.new_event_loop()
++        asyncio.set_event_loop(cls.loop)
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.loop.close()
+ 
+ 
+ class GW5048D_ES_Test(EsMock):
+diff --git a/tests/test_et.py b/tests/test_et.py
+index dfd6fcf..8e6b3d9 100644
+--- a/tests/test_et.py
++++ b/tests/test_et.py
+@@ -51,7 +51,12 @@ def assertSensor(self, sensor_name, expected_value, expected_unit, data):
+ 
+     @classmethod
+     def setUpClass(cls):
+-        cls.loop = asyncio.get_event_loop()
++        cls.loop = asyncio.new_event_loop()
++        asyncio.set_event_loop(cls.loop)
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.loop.close()
+ 
+ 
+ class GW10K_ET_Test(EtMock):
+@@ -378,7 +383,7 @@ def __init__(self, methodName="runTest"):
+         )
+         self.mock_response(ModbusRtuReadCommand(0xF7, 47547, 6), "eco_mode_v2.hex")
+         self.mock_response(ModbusRtuReadCommand(0xF7, 47589, 6), ILLEGAL_DATA_ADDRESS)
+-        asyncio.get_event_loop().run_until_complete(self.read_device_info())
++        asyncio.new_event_loop().run_until_complete(self.read_device_info())
+ 
+     def test_GW10K_ET_fw819_device_info(self):
+         self.assertEqual("0GW10K-ET", self.model_name)
+@@ -436,7 +441,7 @@ def __init__(self, methodName="runTest"):
+             self._READ_DEVICE_VERSION_INFO, "GW10K-ET_device_info_fw1023.hex"
+         )
+         self.mock_response(self._READ_RUNNING_DATA, "GW10K-ET_running_data_fw1023.hex")
+-        asyncio.get_event_loop().run_until_complete(self.read_device_info())
++        asyncio.new_event_loop().run_until_complete(self.read_device_info())
+ 
+     def test_GW10K_ET_fw1023_device_info(self):
+         self.assertEqual("GW10K-ET", self.model_name)
