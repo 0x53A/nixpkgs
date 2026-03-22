@@ -46,6 +46,8 @@
   wxPython,
   opencascade-occt_7_6,
   libngspice,
+  libspnav,
+  poppler,
   valgrind,
   protobuf_29,
   nng,
@@ -84,7 +86,8 @@ stdenv.mkDerivation (finalAttrs: {
 
   patches = [
     # upstream issue 12941 (attempted to upstream, but appreciably unacceptable)
-    ./writable.patch
+    # ensures template-created project files are writable (Nix store copies are read-only)
+    ./writable-template.patch
     # https://gitlab.com/kicad/code/kicad/-/issues/15687
     ./runtime_stock_data_path.patch
   ];
@@ -175,6 +178,9 @@ stdenv.mkDerivation (finalAttrs: {
     libdeflate
     opencascade-occt
     protobuf_29
+
+    libspnav
+    poppler
 
     # This would otherwise cause a linking requirement for mbedtls.
     (nng.override { mbedtlsSupport = false; })

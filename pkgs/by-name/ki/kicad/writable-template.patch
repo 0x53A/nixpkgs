@@ -1,0 +1,25 @@
+diff --git a/kicad/project_template.cpp b/kicad/project_template.cpp
+--- a/kicad/project_template.cpp
++++ b/kicad/project_template.cpp
+@@ -343,6 +343,21 @@
+ 
+             result = false;
+         }
++        else if( srcFile.FileExists() && !destFile.IsFileWritable() && !destFile.SetPermissions(0644) )
++        {
++            if( aErrorMsg )
++            {
++                if( !aErrorMsg->empty() )
++                    *aErrorMsg += "\n";
++
++                wxString msg;
++
++                msg.Printf( _( "Cannot make file writable: '%s'." ), destFile.GetFullPath() );
++                *aErrorMsg += msg;
++            }
++
++            result = false;
++        }
+     }
+ 
+     return result;

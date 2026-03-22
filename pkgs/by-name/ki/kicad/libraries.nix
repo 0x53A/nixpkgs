@@ -2,6 +2,7 @@
   lib,
   stdenv,
   cmake,
+  python3,
   libSrc,
   compressStep,
   stepreduce,
@@ -19,6 +20,9 @@ let
 
       nativeBuildInputs = [
         cmake
+      ]
+      ++ lib.optionals (name == "symbols") [
+        python3
       ]
       ++ lib.optionals (name == "packages3d") [
         stepreduce
